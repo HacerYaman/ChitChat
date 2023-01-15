@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-
+    tools:context=".LoginActivity"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="10dp"
@@ -18,7 +17,7 @@
         android:text="chitchat"
         android:textColor="#9CE91E63"
         android:textSize="50dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="25dp"
         >
 
     </TextView>
@@ -28,6 +27,24 @@
         android:layout_height="110dp"
         app:srcCompat="@drawable/appicon"/>
 
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="E-mail"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"
+        android:inputType="textPassword" />
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
@@ -36,12 +53,11 @@
         android:textColor="@color/black"
         android:layout_marginTop="15dp" />
 
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/regTxt"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Regıster"
-        android:textColor="@color/black"
-        android:layout_marginTop="15dp" />
+        android:text="Don`t have an account? Register.."
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>
