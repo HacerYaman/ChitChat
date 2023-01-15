@@ -53,6 +53,44 @@
         android:textColor="@color/black"
         android:layout_marginTop="15dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/google"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:drawableLeft="@drawable/ic_google"
+            android:text="Google"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/white"
+             />
+
+        <Button
+            android:id="@+id/facebook"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:drawableLeft="@drawable/ic_facebook"
+            android:text="Facebook"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/white"
+            >
+        </Button>
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/regTxt"
         android:layout_width="wrap_content"
