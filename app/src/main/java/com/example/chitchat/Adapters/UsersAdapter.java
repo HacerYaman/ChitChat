@@ -1,6 +1,7 @@
 package com.example.chitchat.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chitchat.ChatDetailActivity;
 import com.example.chitchat.Models.Users;
 import com.example.chitchat.R;
 import com.squareup.picasso.Picasso;
@@ -40,6 +42,23 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         Picasso.get().load(user.getImageurl()).placeholder(R.drawable.userdefpic).into(holder.profile_image);
         holder.userName.setText(user.getUsername());
         holder.lastMessage.setText(user.getLastMessage());
+
+        //----------------
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(mContext, ChatDetailActivity.class);
+
+                intent.putExtra("userId", user.getUserid());
+                intent.putExtra("profilePic", user.getImageurl());
+                intent.putExtra("userName", user.getUsername());
+
+                mContext.startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
