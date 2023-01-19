@@ -1,15 +1,27 @@
 package com.example.chitchat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.chitchat.Adapters.ChatAdapter;
+import com.example.chitchat.Models.Message;
 import com.example.chitchat.databinding.ActivityChatDetailBinding;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ChatDetailActivity extends AppCompatActivity {
 
@@ -45,5 +57,61 @@ public class ChatDetailActivity extends AppCompatActivity {
             }
         });
 
+        //---
+        final ArrayList<Message> messageArrayList= new ArrayList<>();
+        final ChatAdapter chatAdapter= new ChatAdapter(messageArrayList,this,receiverId);
+
+        binding.chatrecyclerview.setHasFixedSize(true);
+        binding.chatrecyclerview.setAdapter(chatAdapter);
+        binding.chatrecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        //---
+
+        final String senderRoom= msg_senderId+receiverId;
+        final String receiverRoom= receiverId+msg_senderId;
+
+        firebaseDatabase.getReference()
+                .child("Chats").child(senderRoom).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        messageArrayList.clear();
+                        for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                            Message messageModel= dataSnapshot.getValue(Message.class);
+                            messageModel.setMessageId(dataSnapshot.getKey());
+                            messageArrayList.add(messageModel);
+                        }
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+        binding.send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String message= binding.message.getText().toString();
+                final Message message1= new Message(msg_senderId,message);
+                message1.setTimestamp(new Date().getTime());
+                binding.message.setText("");                    //clear edit txt
+
+                firebaseDatabase.getReference()
+                        .child("Chats").child(senderRoom).push().setValue(message1)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                firebaseDatabase.getReference()
+                                        .child("Chats").child(receiverRoom).push().setValue(message1)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+
+                                            }
+                                        });
+                            }
+                        });
+            }
+        });
     }
 }

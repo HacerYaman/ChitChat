@@ -28,6 +28,7 @@
        </androidx.constraintlayout.widget.Guideline>
 
       <TextView
+          android:textColor="@color/black"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:id="@+id/sender_txt"
@@ -39,7 +40,7 @@
           android:maxWidth="270dp"
           android:minWidth="50dp"
           android:text="Texttexttexttextsdasdatexttexttexttexttexttexttexttexttexttexttexttexttexttext"
-          app:layout_constraintBottom_toTopOf="@id/receiver_time"
+          app:layout_constraintBottom_toTopOf="@id/sender_time"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toStartOf="@+id/guideline"
           app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +53,7 @@
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:id="@+id/receiver_time"
+          android:id="@+id/sender_time"
           android:layout_marginEnd="10dp"
           android:layout_marginRight="4dp"
           android:layout_marginBottom="3dp"
