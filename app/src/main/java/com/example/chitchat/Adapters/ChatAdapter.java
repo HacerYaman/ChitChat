@@ -17,7 +17,9 @@ import com.example.chitchat.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
@@ -99,12 +101,26 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
         });
         //-----------
-        //pozisyonlara göre mesaj 0. pozisyondaki 1. pozisyon sıra sıra mesajları alcak
 
         if (holder.getClass()==SenderViewHolder.class){
             ((SenderViewHolder)holder).senderMsg.setText(message.getMessage());
+
+            //--------------saat ayarlaması------
+            Date date= new Date(message.getTimestamp());
+            SimpleDateFormat simpleDateFormat= new SimpleDateFormat("HH:mm");
+            String strDate= simpleDateFormat.format(date);
+            ((SenderViewHolder) holder).senderTime.setText(strDate);
+
+
         }else{
             ((ReceiverViewHolder)holder).receiverMsg.setText(message.getMessage());
+
+            //-----------saat ayarlaması-------
+            Date date= new Date(message.getTimestamp());
+            SimpleDateFormat simpleDateFormat= new SimpleDateFormat("HH:mm");
+            String strDate= simpleDateFormat.format(date);
+            ((ReceiverViewHolder) holder).receiverTime.setText(strDate);
+
         }
         //-----------
     }
