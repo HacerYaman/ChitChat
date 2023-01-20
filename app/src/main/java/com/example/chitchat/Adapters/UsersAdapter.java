@@ -57,8 +57,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 mContext.startActivity(intent);
             }
         });
-
-
     }
 
     @Override

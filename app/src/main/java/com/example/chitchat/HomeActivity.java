@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.chitchat.Adapters.FragmentsAdapter;
 import com.example.chitchat.Adapters.UsersAdapter;
 import com.example.chitchat.Models.Users;
 import com.example.chitchat.databinding.ActivityHomeBinding;
@@ -30,52 +32,18 @@ public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
-    private Context mContext;
-    ArrayList<Users>  usersArrayList;
-    private RecyclerView recycler_view;
-    private UsersAdapter usersAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        binding.viewPager.setAdapter(new FragmentsAdapter(getSupportFragmentManager()));
+        binding.tabLayout.setupWithViewPager(binding.viewPager);
 
         firebaseAuth=FirebaseAuth.getInstance();
-        firebaseDatabase=FirebaseDatabase.getInstance();
-
-        recycler_view=findViewById(R.id.recycler_view);
-        recycler_view.setHasFixedSize(true);
-        recycler_view.setLayoutManager(new LinearLayoutManager(this));
-
-
-        usersArrayList=new ArrayList<>();
-        usersAdapter= new UsersAdapter(usersArrayList,this);
-        recycler_view.setAdapter(usersAdapter);
-
-
-        firebaseDatabase.getReference().child("Users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                usersArrayList.clear();
-
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Users user= dataSnapshot.getValue(Users.class);
-                    user.setUserid(dataSnapshot.getKey());
-
-                    if(!user.getUserid().equals(firebaseAuth.getCurrentUser().getUid())){
-                        usersArrayList.add(user);
-                    }
-                }
-                usersAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
     }
 
@@ -89,18 +57,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case  R.id.settings:
-                //----intent
-                break;
 
             case R.id.logout:
                 firebaseAuth.signOut();
                 startActivity(new Intent(HomeActivity.this,MainActivity.class));
                 finish();
-                break;
-
-            case R.id.groupChat:
-                //--------
                 break;
         }
         return super.onOptionsItemSelected(item);
