@@ -42,8 +42,6 @@ public class SearchFragment extends Fragment {
 
         binding=FragmentSearchBinding.inflate(inflater,container,false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-
         binding.searchRecyclerView.setHasFixedSize(true);
         binding.searchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -44,8 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        getSupportActionBar().hide();
-
         firebaseAuth=FirebaseAuth.getInstance();
 
         binding.regTxt.setOnClickListener(new View.OnClickListener() {
