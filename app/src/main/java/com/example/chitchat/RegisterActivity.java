@@ -95,12 +95,12 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
 
-                    Users user= new Users(binding.username.getText().toString(), //databasede username email ve password dallariyla bir user olustu
+                    /*Users user= new Users(binding.username.getText().toString(), //databasede username email ve password dallariyla bir user olustu
                                           binding.email.getText().toString(),
                                           binding.password.getText().toString());
 
                     String id= firebaseAuth.getCurrentUser().getUid();
-                    databaseReference.child("Users").child(id).setValue(user);
+                    databaseReference.child("Users").child(id).setValue(user);*/
 
                     //-------------------------------------
                     HashMap<String, Object> usershashMap=new HashMap<>();
@@ -111,7 +111,8 @@ public class RegisterActivity extends AppCompatActivity {
                     usershashMap.put("userid",firebaseAuth.getCurrentUser().getUid());
                     usershashMap.put("aboutMe","");
 
-                    databaseReference.child("UsersDetail").child(firebaseAuth.getCurrentUser().getUid())
+
+                    databaseReference.child("Users").child(firebaseAuth.getCurrentUser().getUid())
                             .setValue(usershashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

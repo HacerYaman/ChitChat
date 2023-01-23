@@ -16,14 +16,13 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/proImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_margin="20dp"
             android:src="@drawable/userdefpic"
             >
         </de.hdodenhof.circleimageview.CircleImageView>
-
 
         <Button
             android:id="@+id/changePhoto"

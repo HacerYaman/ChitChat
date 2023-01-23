@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.ProfileFragment"
-    android:background="@drawable/bc2"
-    android:orientation="vertical">
+    tools:context=".ProfilDetailActivity"
+    android:orientation="vertical"
+    android:background="@drawable/bc2">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,6 +24,16 @@
             android:src="@drawable/userdefpic"
             >
         </de.hdodenhof.circleimageview.CircleImageView>
+
+        <Button
+            android:id="@+id/add_frien"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Add"
+            android:textSize="15sp"
+            android:layout_marginTop="20dp">
+        </Button>
 
         <TextView
             android:layout_width="wrap_content"
@@ -84,24 +95,6 @@
             app:met_floatingLabel="normal"
             android:textSize="18dp">
         </TextView>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Edıt Profıle"
-            android:layout_marginTop="50dp"
-            android:id="@+id/editProfile">
-        </Button>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Log Out"
-            android:id="@+id/logOut"
-            android:layout_marginTop="20dp">
-        </Button>
 
     </LinearLayout>
 

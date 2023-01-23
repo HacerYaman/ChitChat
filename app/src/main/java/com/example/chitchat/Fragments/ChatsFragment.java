@@ -49,7 +49,10 @@ public class ChatsFragment extends Fragment {
         binding.rerecece.setHasFixedSize(true);
 
 
-        firebaseDatabase.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+        //firebaseDatabase.getReference().child("Chats")
+
+
+        /*firebaseDatabase.getReference().child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usersArrayList.clear();
@@ -60,6 +63,7 @@ public class ChatsFragment extends Fragment {
 
                     if(!user.getUserid().equals(firebaseAuth.getCurrentUser().getUid())){
                         usersArrayList.add(user);
+
                     }
                 }
                 usersAdapter.notifyDataSetChanged();
@@ -69,7 +73,7 @@ public class ChatsFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        });*/
 
         return binding.getRoot();
     }

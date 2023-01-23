@@ -62,7 +62,7 @@ public class EditProfileActivity extends AppCompatActivity {
         registerLauncher();
 
         FirebaseDatabase.getInstance()
-                .getReference("UsersDetail")
+                .getReference("Users")
                 .child(firebaseUser.getUid())
                 .addValueEventListener(new ValueEventListener() {
             @Override
@@ -116,13 +116,17 @@ public class EditProfileActivity extends AppCompatActivity {
         uploadImage();
 
         FirebaseDatabase.getInstance().getReference()
-                .child("UsersDetail").child(firebaseUser.getUid()).updateChildren(map)
+                .child("Users").child(firebaseUser.getUid()).updateChildren(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(EditProfileActivity.this, "Changes Saved!", Toast.LENGTH_LONG).show();
                     }
                 });
+
+        //FirebaseDatabase.getInstance().getReference()
+         //       .child("Users").child(firebaseUser.getUid()).child("username").setValue(binding.username.getText().toString());
+
     }
 
     public void changePhoto(View view) {
@@ -164,7 +168,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         String url = downloadUri.toString();
 
                         FirebaseDatabase.getInstance().getReference()
-                                .child("UsersDetail").child(firebaseUser.getUid()).child("imageurl").setValue(url);
+                                .child("Users").child(firebaseUser.getUid()).child("imageurl").setValue(url);
 
                     } else {
                         Toast.makeText(EditProfileActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();

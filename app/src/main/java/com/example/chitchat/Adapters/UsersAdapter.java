@@ -7,13 +7,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chitchat.ChatDetailActivity;
 import com.example.chitchat.Models.Users;
+import com.example.chitchat.ProfilDetailActivity;
 import com.example.chitchat.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,6 +31,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     ArrayList<Users>  userList;
     Context mContext;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
 
     public UsersAdapter(ArrayList<Users> userList, Context mContext) {
         this.userList = userList;
@@ -37,7 +50,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Users user= userList.get(position);
+
+        firebaseUser =FirebaseAuth.getInstance().getCurrentUser();
+
+        String currentUser=firebaseUser.getUid();
+
+        Users user= userList.get(position);             //------SU AN ARATILIP SEÇİKEN HESAP BURADA!!!!!!!!!!!!!!!!!!!!!!!!!
 
         Picasso.get().load(user.getImageurl()).placeholder(R.drawable.userdefpic).into(holder.profile_image);
         holder.userName.setText(user.getUsername());
@@ -45,16 +63,77 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         //----------------
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {      //TIKLANILAN KULLANICININ İNFOLARI BURADA BURADAN CHAT DETAİLE ALIYORUZ
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(mContext, ChatDetailActivity.class);
+
+                FirebaseDatabase.getInstance().getReference("Follow")
+                        .child(currentUser).child("following").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.child(user.getUserid()).exists()){
+
+                                    FirebaseDatabase.getInstance().getReference("Follow")
+                                            .child(user.getUserid()).child("following").addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                                    if (snapshot.child(currentUser).exists()){
+
+                                                        Intent intent= new Intent(mContext, ChatDetailActivity.class);
+                                                        intent.putExtra("userId", user.getUserid());
+                                                        intent.putExtra("profilePic", user.getImageurl());
+                                                        intent.putExtra("userName", user.getUsername());
+
+                                                        mContext.startActivity(intent);
+
+                                                    }else{
+                                                        Toast.makeText(mContext, "need to add each other", Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+
+                                }else{
+                                    Toast.makeText(mContext, "need to add each other", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+
+                /*Intent intent= new Intent(mContext, ChatDetailActivity.class);
 
                 intent.putExtra("userId", user.getUserid());
                 intent.putExtra("profilePic", user.getImageurl());
                 intent.putExtra("userName", user.getUsername());
 
-                mContext.startActivity(intent);
+                mContext.startActivity(intent);*/
+            }
+        });
+
+        holder.profile_image.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent2= new Intent(mContext, ProfilDetailActivity.class);
+
+                intent2.putExtra("userId", user.getUserid());
+                intent2.putExtra("profilePic", user.getImageurl());
+                intent2.putExtra("userName", user.getUsername());
+
+                intent2.putExtra("aboutMe", user.getAboutMe());
+                intent2.putExtra("fullname", user.getFullname());
+
+                mContext.startActivity(intent2);
+
+                return false;
             }
         });
     }

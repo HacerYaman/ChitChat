@@ -43,7 +43,7 @@ public class ProfileFragment extends Fragment {
 
 
         FirebaseDatabase.getInstance()
-                .getReference("UsersDetail")
+                .getReference("Users")
                 .child(firebaseUser.getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -80,8 +80,6 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
-
-
 
         return binding.getRoot();
     }
