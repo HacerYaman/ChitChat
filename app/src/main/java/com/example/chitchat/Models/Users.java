@@ -6,6 +6,7 @@ public class Users {
         private String email;
         private String imageurl;
         private String userid;
+        private String aboutMe;
         //--------
         private String lastMessage;
         private String password;
@@ -14,21 +15,28 @@ public class Users {
         public Users() {
         }
 
-        public Users(String username, String fullname, String email, String imageurl, String userid, String lastMessage, String password, String status) {
-                this.username = username;
-                this.fullname = fullname;
-                this.email = email;
-                this.imageurl = imageurl;
-                this.userid = userid;
-                this.lastMessage = lastMessage;
-                this.password = password;
-                this.status = status;
-        }
 
         public Users(String username, String email, String password) {          // for registering. 4. video 18.50
                 this.username = username;
                 this.email = email;
                 this.password = password;
+        }
+
+        public Users(String username, String fullname, String email, String imageurl, String userid, String aboutMe) {
+                this.username = username;
+                this.fullname = fullname;
+                this.email = email;
+                this.imageurl = imageurl;
+                this.userid = userid;
+                this.aboutMe = aboutMe;
+        }
+
+        public String getAboutMe() {
+                return aboutMe;
+        }
+
+        public void setAboutMe(String aboutMe) {
+                this.aboutMe = aboutMe;
         }
 
         public String getUsername() {

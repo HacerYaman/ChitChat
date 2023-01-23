@@ -57,8 +57,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:id="@+id/bio"
-            android:hint="Bio"
+            android:id="@+id/aboutMe"
+            android:hint="About Me"
             android:layout_marginTop="20dp"
             app:met_floatingLabel="normal">
         </TextView>

@@ -53,7 +53,6 @@ public class RegisterActivity extends AppCompatActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        getSupportActionBar().hide();
 
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference();
@@ -103,37 +102,32 @@ public class RegisterActivity extends AppCompatActivity {
                     String id= firebaseAuth.getCurrentUser().getUid();
                     databaseReference.child("Users").child(id).setValue(user);
 
-                    Toast.makeText(RegisterActivity.this, "nicely done", Toast.LENGTH_SHORT).show();
-                    pd.dismiss();
-
-                    Intent intent=new Intent(RegisterActivity.this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-
-                    /*HashMap<String, Object> usershashMap=new HashMap<>();
+                    //-------------------------------------
+                    HashMap<String, Object> usershashMap=new HashMap<>();
                     usershashMap.put("username",username);
                     usershashMap.put("fullname",fullname);
                     usershashMap.put("email",email);
                     usershashMap.put("imageurl","https://firebasestorage.googleapis.com/v0/b/chitchat-f7376.appspot.com/o/userDefPic.png?alt=media&token=aa63bb94-c2a6-4108-9298-1ca07f6fabb4");
                     usershashMap.put("userid",firebaseAuth.getCurrentUser().getUid());
-                    //--------videodan yeni
-                    usershashMap.put("lastMessage","");
-                    usershashMap.put("password",password);
-                    usershashMap.put("status","");
+                    usershashMap.put("aboutMe","");
 
-                    databaseReference.child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    databaseReference.child("UsersDetail").child(firebaseAuth.getCurrentUser().getUid())
                             .setValue(usershashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
                                 pd.dismiss();
-                                Toast.makeText(RegisterActivity.this, "nicely done", Toast.LENGTH_SHORT).show();
-                                Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
+                                Toast.makeText(RegisterActivity.this, "nicely doeeenee", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    });*/
+                    });
+
+                    //---------------------------------------
+                    pd.dismiss();
+                    Intent intent=new Intent(RegisterActivity.this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
                 }else{
                     pd.dismiss();
                     Toast.makeText(RegisterActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
