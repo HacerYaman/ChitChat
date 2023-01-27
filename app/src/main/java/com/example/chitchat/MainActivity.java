@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
-    private static final String ONESIGNAL_APP_ID = "0e89894c-a63c-44e4-bcaf-a375ff96afa0";
+    //private static final String ONESIGNAL_APP_ID = "0e89894c-a63c-44e4-bcaf-a375ff96afa0";
 
     @Override
     protected void onStart() {
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         //-------------------------------------
 
-        // Enable verbose OneSignal logging to debug issues if needed.
+       /* // Enable verbose OneSignal logging to debug issues if needed.
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
 
         // OneSignal Initialization
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         // promptForPushNotifications will show the native Android notification permission prompt.
         // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 7)
-        OneSignal.promptForPushNotifications();
+        OneSignal.promptForPushNotifications();*/
 
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
