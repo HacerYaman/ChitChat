@@ -191,4 +191,30 @@ public class ChatDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    //-------------online offline status
+
+    private void status(String status){
+
+        HashMap<String, Object> hashMap= new HashMap<>();
+        hashMap.put("status",status);
+        FirebaseDatabase.getInstance().getReference("Users").child(firebaseAuth.getUid()).updateChildren(hashMap);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
+    }
+
+    //----------------------------
+
+
+
 }

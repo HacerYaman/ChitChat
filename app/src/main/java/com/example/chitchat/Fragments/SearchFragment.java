@@ -57,7 +57,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    readUsers(charSequence.toString().toLowerCase());
+                    readUsers(charSequence.toString());
             }
 
             @Override
@@ -97,7 +97,6 @@ public class SearchFragment extends Fragment {
                             //----------------------------------- tüm kullanıcıları çekip tek tek arrayliste koyduk
                             usersArrayList.clear();
                             for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-
                                 Users user=dataSnapshot.getValue(Users.class);
                                 usersArrayList.add(user);
                             }
