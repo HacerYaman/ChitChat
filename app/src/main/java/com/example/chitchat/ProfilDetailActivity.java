@@ -16,10 +16,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 public class ProfilDetailActivity extends AppCompatActivity {
 
     private ActivityProfilDetailBinding binding;
-    private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     Button addingButton;
     String searchedId;
@@ -31,13 +32,12 @@ public class ProfilDetailActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        firebaseAuth=FirebaseAuth.getInstance();
         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
 
         addingButton=binding.addFrien;
 
         //-------------
-        searchedId= getIntent().getStringExtra("userId");                    //başka bir sayfada aynı get intent String recId olarak kullanıldu
+        searchedId= getIntent().getStringExtra("userId");    //başka bir sayfada aynı get intent String recId olarak kullanıldu
         String searchedUserName= getIntent().getStringExtra("userName");
         String searchedProfilePic= getIntent().getStringExtra("profilePic");
         String searchedAboutMe= getIntent().getStringExtra("aboutMe");
@@ -49,7 +49,6 @@ public class ProfilDetailActivity extends AppCompatActivity {
         binding.aboutMe.setText(searchedAboutMe);
         Picasso.get().load(searchedProfilePic).placeholder(R.drawable.userdefpic).into(binding.imageProfile);
 
-
         checkFollowingStatus();
 
         binding.addFrien.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +58,6 @@ public class ProfilDetailActivity extends AppCompatActivity {
 
                     FirebaseDatabase.getInstance().getReference().child("Follow")
                             .child(firebaseUser.getUid()).child("following").child(searchedId).setValue(true);
-
 
                     FirebaseDatabase.getInstance().getReference().child("Follow")
                             .child(firebaseUser.getUid()).child("followers").child(searchedId).setValue(true);
@@ -91,6 +89,28 @@ public class ProfilDetailActivity extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-
     }
+
+    private void status(String status){
+
+        HashMap<String, Object> hashMap= new HashMap<>();
+        hashMap.put("status",status);
+        FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).updateChildren(hashMap);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //FirebaseDatabase.getInstance().getReference().removeEventListener(seenListener);
+        status("offline");
+    }
+
+
+
 }

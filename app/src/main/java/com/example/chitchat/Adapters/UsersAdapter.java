@@ -31,14 +31,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     ArrayList<Users>  userList;
     Context mContext;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
     FirebaseUser firebaseUser;
-    FirebaseAuth firebaseAuth;
+    boolean isChat;
 
-    public UsersAdapter(ArrayList<Users> userList, Context mContext) {
+    public UsersAdapter(ArrayList<Users> userList, Context mContext, boolean isChat) {
         this.userList = userList;
         this.mContext = mContext;
+        this.isChat=isChat;
     }
 
     @NonNull
@@ -107,15 +106,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
                             }
                         });
-
-
-                /*Intent intent= new Intent(mContext, ChatDetailActivity.class);
-
-                intent.putExtra("userId", user.getUserid());
-                intent.putExtra("profilePic", user.getImageurl());
-                intent.putExtra("userName", user.getUsername());
-
-                mContext.startActivity(intent);*/
             }
         });
 
@@ -136,6 +126,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 return false;
             }
         });
+
+        if (isChat){
+            if (user.getStatus().equals("online")){
+                holder.img_online.setVisibility(View.VISIBLE);
+                holder.img_offline.setVisibility(View.GONE);
+            }else{
+                holder.img_online.setVisibility(View.GONE);
+                holder.img_offline.setVisibility(View.VISIBLE);
+            }
+        }else{
+            holder.img_online.setVisibility(View.GONE);
+            holder.img_offline.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -144,7 +148,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView profile_image;
+        ImageView profile_image, img_online,img_offline;
         TextView userName, lastMessage;
 
         public ViewHolder(@NonNull View itemView) {
@@ -153,6 +157,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             profile_image=itemView.findViewById(R.id.profile_image);
             userName=itemView.findViewById(R.id.usernameList);
             lastMessage=itemView.findViewById(R.id.lastMessage);
+            img_online=itemView.findViewById(R.id.img_online);
+            img_offline=itemView.findViewById(R.id.img_offline);
+
 
         }
     }

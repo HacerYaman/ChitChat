@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
@@ -68,8 +70,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getActivity(), MainActivity.class));
-                getActivity().finish();
+                startActivity(new Intent(getActivity(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                //getActivity().finish();
             }
         });
 
@@ -82,6 +84,26 @@ public class ProfileFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    private void status(String status){
+
+        HashMap<String, Object> hashMap= new HashMap<>();
+        hashMap.put("status",status);
+        FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).updateChildren(hashMap);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //FirebaseDatabase.getInstance().getReference().removeEventListener(seenListener);
+        status("offline");
     }
 
 }

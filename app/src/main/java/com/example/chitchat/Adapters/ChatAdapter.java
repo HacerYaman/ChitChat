@@ -61,12 +61,27 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         Message message= messageArrayList.get(position);
 
+
+        ///----------------------
+        if (position == messageArrayList.size()-1){
+            if (message.isSeen()){
+                ((SenderViewHolder)holder).txtSeen.setText("seen");
+            }else{
+                ((SenderViewHolder)holder).txtSeen.setText("delivered");            //crashliyo
+            }
+        }else {
+            ((SenderViewHolder)holder).txtSeen.setVisibility(View.GONE);
+        }
+        //-------------------------
+
+
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
 
                String current_user= FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+               //---------------
                if (current_user.equals(message.getuId())){
                    new AlertDialog.Builder(mContex)
                            .setTitle("Delete")
@@ -131,22 +146,28 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     public class ReceiverViewHolder extends RecyclerView.ViewHolder{
-        TextView receiverMsg, receiverTime;
+        TextView receiverMsg, receiverTime, txtSeen;
+
         public ReceiverViewHolder(@NonNull View itemView) {
             super(itemView);
 
             receiverMsg=itemView.findViewById(R.id.receiver_txt);
             receiverTime=itemView.findViewById(R.id.receiver_time);
+            txtSeen=itemView.findViewById(R.id.txtSeen);
         }
     }
 
     public class SenderViewHolder extends RecyclerView.ViewHolder{
-        TextView senderMsg, senderTime;
+        TextView senderMsg, senderTime, txtSeen;
+
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
 
             senderMsg=itemView.findViewById(R.id.sender_txt);
             senderTime=itemView.findViewById(R.id.sender_time);
+            txtSeen=itemView.findViewById(R.id.txtSeen);
+
         }
     }
+
 }

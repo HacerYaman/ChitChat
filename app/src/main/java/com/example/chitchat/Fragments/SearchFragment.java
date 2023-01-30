@@ -46,7 +46,7 @@ public class SearchFragment extends Fragment {
         binding.searchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         usersArrayList= new ArrayList<>();
-        usersAdapter= new UsersAdapter(usersArrayList,getContext());
+        usersAdapter= new UsersAdapter(usersArrayList,getContext(),false);
         binding.searchRecyclerView.setAdapter(usersAdapter);
 
         binding.searchBar.addTextChangedListener(new TextWatcher() {

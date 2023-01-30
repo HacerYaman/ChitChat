@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import com.example.chitchat.Adapters.UsersAdapter;
 import com.example.chitchat.Models.Message;
 import com.example.chitchat.Models.Users;
-import com.example.chitchat.Notifications.Data;
-import com.example.chitchat.R;
 import com.example.chitchat.databinding.FragmentChatsBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ChatsFragment extends Fragment {
 
@@ -44,12 +43,9 @@ public class ChatsFragment extends Fragment {
         firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         databaseReference= FirebaseDatabase.getInstance().getReference();
 
-
-        //usersAdapter= new UsersAdapter(usersArrayList,getContext());
         LinearLayoutManager  layoutManager= new LinearLayoutManager(getContext());
         binding.rerecece.setLayoutManager(layoutManager);
         binding.rerecece.setHasFixedSize(true);
-
 
         FirebaseDatabase.getInstance().getReference("Chats").addValueEventListener(new ValueEventListener() {
             @Override
@@ -71,34 +67,8 @@ public class ChatsFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
-
-        /*firebaseDatabase.getReference().child("Users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                usersArrayList.clear();
-
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Users user= dataSnapshot.getValue(Users.class);
-                    user.setUserid(dataSnapshot.getKey());
-
-                    if(!user.getUserid().equals(firebaseAuth.getCurrentUser().getUid())){
-                        usersArrayList.add(user);
-
-                    }
-                }
-                usersAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
-
         return binding.getRoot();
     }
 
@@ -130,7 +100,7 @@ public class ChatsFragment extends Fragment {
                         }
                     }
                 }
-                usersAdapter= new UsersAdapter(usersArrayList,getContext());
+                usersAdapter= new UsersAdapter(usersArrayList,getContext(),true);
                 binding.rerecece.setAdapter(usersAdapter);
                 usersAdapter.notifyDataSetChanged();
 
@@ -141,4 +111,25 @@ public class ChatsFragment extends Fragment {
             }
         });
     }
+
+    private void status(String status){
+
+        HashMap<String, Object> hashMap= new HashMap<>();
+        hashMap.put("status",status);
+        FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).updateChildren(hashMap);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //FirebaseDatabase.getInstance().getReference().removeEventListener(seenListener);
+        status("offline");
+    }
+
 }

@@ -3,25 +3,19 @@ package com.example.chitchat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.chitchat.Adapters.ChatAdapter;
 import com.example.chitchat.Models.Message;
 import com.example.chitchat.databinding.ActivityChatDetailBinding;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.onesignal.OneSignal;
-import com.onesignal.OneSignalDb;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,10 +26,11 @@ public class ChatDetailActivity extends AppCompatActivity {
 
 
     private ActivityChatDetailBinding binding;
-    private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
     private ArrayList<Message> messageArrayList;
     private ChatAdapter chatAdapter;
+    ValueEventListener seenListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +40,6 @@ public class ChatDetailActivity extends AppCompatActivity {
         setContentView(view);
 
         firebaseAuth=FirebaseAuth.getInstance();
-        firebaseDatabase=FirebaseDatabase.getInstance();
 
         final String msg_senderId= firebaseAuth.getUid();
 
@@ -141,12 +135,44 @@ public class ChatDetailActivity extends AppCompatActivity {
             }
         });
 
+        seenMessage(receiverId);
+
     }
 
     //--------------------------
 
-    private void sendMessage(String sender, String receiver, String message, Long timestamp){
+    private void seenMessage(String userid){
 
+        DatabaseReference  reference= FirebaseDatabase.getInstance().getReference("Chats");
+
+        seenListener=reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                    Message message= dataSnapshot.getValue(Message.class);
+
+                    if (message.getReceiver().equals(firebaseAuth.getCurrentUser().getUid()) && message.getuId().equals(userid)){
+
+                        HashMap<String, Object> hashMap= new HashMap<>();
+
+                        hashMap.put("isSeen", true);
+
+                        dataSnapshot.getRef().updateChildren(hashMap);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    private void sendMessage(String sender, String receiver, String message, Long timestamp){
         DatabaseReference reference= FirebaseDatabase.getInstance().getReference();
 
         HashMap<String , Object> hashMap= new HashMap<>();
@@ -155,6 +181,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         hashMap.put("receiver",receiver);
         hashMap.put("message", message);
         hashMap.put("timestamp", timestamp);
+        hashMap.put("isSeen", false );
 
         reference.child("Chats").push().setValue(hashMap);
 
@@ -210,6 +237,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        FirebaseDatabase.getInstance().getReference().removeEventListener(seenListener);
         status("offline");
     }
 

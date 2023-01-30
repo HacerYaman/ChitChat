@@ -7,15 +7,18 @@ public class Message {
     private String messageId;
     private Long timestamp;
     private String receiver;
+    private boolean isSeen;
+
 
     public Message() {
     }
 
-    public Message(String uId, String message, Long timestamp, String receiver) {
+    public Message(String uId, String message, Long timestamp, String receiver, boolean isSeen) {
         this.uId = uId;
         this.message = message;
         this.timestamp = timestamp;
         this.receiver = receiver;
+        this.isSeen= isSeen;
     }
 
     public Message(String uId, String message, Long timestamp) {
@@ -29,6 +32,13 @@ public class Message {
         this.message = message;
     }
 
+    public boolean isSeen() {
+        return isSeen;
+    }
+
+    public void setSeen(boolean seen) {
+        isSeen = seen;
+    }
     public String getReceiver() {
         return receiver;
     }

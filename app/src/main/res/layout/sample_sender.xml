@@ -16,16 +16,15 @@
        android:layout_marginTop="5dp"
        android:background="@drawable/bg_sender"
        android:maxHeight="400dp"
-       android:minHeight="30dp">
+       android:minHeight="30dp"
+       android:id="@+id/textBox">
 
        <androidx.constraintlayout.widget.Guideline
+           android:id="@+id/guideline"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-          android:id="@+id/guideline"
-          android:orientation="vertical"
-          app:layout_constraintGuide_end="16dp"
-           >
-       </androidx.constraintlayout.widget.Guideline>
+           android:orientation="vertical"
+           app:layout_constraintGuide_percent="0.9451613"></androidx.constraintlayout.widget.Guideline>
 
       <TextView
           android:textColor="@color/black"
@@ -64,18 +63,19 @@
           >
       </TextView>
 
-
-
    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
-
-
-
-
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="seen"
+        android:layout_below="@+id/textBox"
+        android:layout_toEndOf="@id/textBox"
+        android:layout_marginStart="-55dp"
+        android:textStyle="italic"
+        android:id="@+id/txtSeen"
+        >
+    </TextView>
 
 </RelativeLayout>
 
