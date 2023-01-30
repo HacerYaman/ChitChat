@@ -57,64 +57,48 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    readUsers(charSequence.toString());
+
+                if (binding.searchBar.getText().toString().equals("")){
+                    binding.searchRecyclerView.setVisibility(View.GONE);
+                }else{
+                    binding.searchRecyclerView.setVisibility(View.VISIBLE);
+                    searchUsers(charSequence.toString());
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+                    if (binding.searchBar.getText().toString().equals("")){
+                        binding.searchRecyclerView.setVisibility(View.GONE);
+                    }else{
+                        binding.searchRecyclerView.setVisibility(View.VISIBLE);
 
+                    }
             }
         });
 
         return binding.getRoot();
     }
 
-    private void readUsers(String s){
-
-        Query query=FirebaseDatabase.getInstance()
+    private void searchUsers(String s){
+        Query query= FirebaseDatabase.getInstance()
                 .getReference("Users").orderByChild("username")
                 .startAt(s)
                 .endAt(s+"\uf8ff");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                binding.searchBar.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        binding.searchRecyclerView.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                        if (binding.searchBar.getText().toString().equals("")){
-                            binding.searchRecyclerView.setVisibility(View.GONE);
-                        }else{
-                            binding.searchRecyclerView.setVisibility(View.VISIBLE);
-
-                            //----------------------------------- tüm kullanıcıları çekip tek tek arrayliste koyduk
-                            usersArrayList.clear();
-                            for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                                Users user=dataSnapshot.getValue(Users.class);
-                                usersArrayList.add(user);
-                            }
-                            usersAdapter.notifyDataSetChanged();
-                            //--------------------------------------
-                        }
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersArrayList.clear();
+                for (DataSnapshot snapshot: dataSnapshot.getChildren() ){
+                    Users user= snapshot.getValue(Users.class);
+                    usersArrayList.add(user);
+                }
+                usersAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
