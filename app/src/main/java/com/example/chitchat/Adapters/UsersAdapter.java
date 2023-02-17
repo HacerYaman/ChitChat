@@ -117,7 +117,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 intent2.putExtra("userId", user.getUserid());
                 intent2.putExtra("profilePic", user.getImageurl());
                 intent2.putExtra("userName", user.getUsername());
-
                 intent2.putExtra("aboutMe", user.getAboutMe());
                 intent2.putExtra("fullname", user.getFullname());
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.example.chitchat.Adapters.UsersAdapter;
 import com.example.chitchat.Models.Message;
 import com.example.chitchat.Models.Users;
+import com.example.chitchat.Notifications.Token;
 import com.example.chitchat.databinding.FragmentChatsBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +71,9 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
+
+        //updateToken();
+
         return binding.getRoot();
     }
 
@@ -89,7 +94,7 @@ public class ChatsFragment extends Fragment {
 
                         if (user.getUserid().equals(id)){
                             if (usersArrayList.size()!=0){
-                                for (Users user1: usersArrayList){
+                                for (Users user1: usersArrayList){   //çökertiyo
                                     if(!user.getUserid().equals(user1.getUserid())){
                                         usersArrayList.add(user);
                                     }
@@ -131,5 +136,16 @@ public class ChatsFragment extends Fragment {
         //FirebaseDatabase.getInstance().getReference().removeEventListener(seenListener);
         status("offline");
     }
+
+    private void updateToken(String token){
+
+        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1= new Token(token);
+        reference.child(firebaseUser.getUid()).setValue(token1);
+    }
+
+
+
+
 
 }

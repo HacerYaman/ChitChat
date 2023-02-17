@@ -43,7 +43,6 @@ public class ProfileFragment extends Fragment {
 
         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
 
-
         FirebaseDatabase.getInstance()
                 .getReference("Users")
                 .child(firebaseUser.getUid())
@@ -70,8 +69,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getActivity(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                //getActivity().finish();
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
             }
         });
 
@@ -79,7 +78,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), EditProfileActivity.class));
-                getActivity().finish();
             }
         });
 
@@ -87,7 +85,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void status(String status){
-
         HashMap<String, Object> hashMap= new HashMap<>();
         hashMap.put("status",status);
         FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).updateChildren(hashMap);
@@ -102,7 +99,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        //FirebaseDatabase.getInstance().getReference().removeEventListener(seenListener);
         status("offline");
     }
 

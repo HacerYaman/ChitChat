@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 import com.example.chitchat.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +35,26 @@ public class RegisterActivity extends AppCompatActivity {
 
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference();
+
+        binding.policy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegisterActivity.this, PolicyActivity.class));
+            }
+        });
+
+        binding.regButton.setEnabled(false);
+
+        binding.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(binding.checkbox.isChecked()){
+                    binding.regButton.setEnabled(true);
+                }else{
+                    binding.regButton.setEnabled(false);
+                }
+            }
+        });
 
         binding.logTxt.setOnClickListener(new View.OnClickListener() {
             @Override

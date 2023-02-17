@@ -96,13 +96,26 @@
 
     </LinearLayout>
 
-
-
     <TextView
         android:id="@+id/logTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account? Log in.."
         android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/policy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I have read and agree to the privacy policy. \n                           Click to read."
+        android:layout_marginTop="10dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkbox"
+        >
+    </CheckBox>
+
 
 </LinearLayout>

@@ -18,6 +18,7 @@ import com.example.chitchat.Models.Users;
 import com.example.chitchat.R;
 import com.example.chitchat.databinding.FragmentChatsBinding;
 import com.example.chitchat.databinding.FragmentSearchBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -72,7 +73,6 @@ public class SearchFragment extends Fragment {
                         binding.searchRecyclerView.setVisibility(View.GONE);
                     }else{
                         binding.searchRecyclerView.setVisibility(View.VISIBLE);
-
                     }
             }
         });
@@ -90,6 +90,9 @@ public class SearchFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersArrayList.clear();
+
+                FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
+
                 for (DataSnapshot snapshot: dataSnapshot.getChildren() ){
                     Users user= snapshot.getValue(Users.class);
                     usersArrayList.add(user);

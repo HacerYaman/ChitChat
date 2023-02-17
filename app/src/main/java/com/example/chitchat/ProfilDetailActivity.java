@@ -44,6 +44,12 @@ public class ProfilDetailActivity extends AppCompatActivity {
         String searchedFullName= getIntent().getStringExtra("fullname");
         //-------------
 
+        if (firebaseUser.getUid()== searchedId){
+            addingButton.setVisibility(View.GONE);
+        }
+
+
+
         binding.fullname.setText(searchedFullName);
         binding.username.setText(searchedUserName);
         binding.aboutMe.setText(searchedAboutMe);
@@ -110,7 +116,4 @@ public class ProfilDetailActivity extends AppCompatActivity {
         //FirebaseDatabase.getInstance().getReference().removeEventListener(seenListener);
         status("offline");
     }
-
-
-
 }
