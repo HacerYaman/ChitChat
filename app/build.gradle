@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.chitchat'
+    namespace 'com.baitenthy.chitchat'
     compileSdk 33
 
     buildFeatures {
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.chitchat"
+        applicationId "com.baitenthy.chitchat"
         minSdk 21
         targetSdk 33
         versionCode 1
