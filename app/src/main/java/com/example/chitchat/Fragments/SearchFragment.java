@@ -90,12 +90,14 @@ public class SearchFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersArrayList.clear();
-
                 FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
                 for (DataSnapshot snapshot: dataSnapshot.getChildren() ){
                     Users user= snapshot.getValue(Users.class);
-                    usersArrayList.add(user);
+
+                    if(firebaseAuth.getUid()!= user.getUserid()){
+                        usersArrayList.add(user);
+                    }
                 }
                 usersAdapter.notifyDataSetChanged();
             }

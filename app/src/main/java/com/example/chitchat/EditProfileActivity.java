@@ -84,7 +84,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         binding.close.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {finishAffinity();
+            public void onClick(View view) {
+                startActivity(new Intent(EditProfileActivity.this, HomeActivity.class));
             }
         });
 
@@ -101,6 +102,8 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveChages();
+                Intent intent= new Intent(EditProfileActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -175,7 +178,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
         }
     }
 

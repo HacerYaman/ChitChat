@@ -144,8 +144,4 @@ public class ChatsFragment extends Fragment {
         reference.child(firebaseUser.getUid()).setValue(token1);
     }
 
-
-
-
-
 }

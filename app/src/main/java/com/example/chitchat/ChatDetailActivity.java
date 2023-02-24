@@ -171,7 +171,6 @@ public class ChatDetailActivity extends AppCompatActivity {
         });
     }
 
-
     private void sendMessage(String sender, String receiver, String message, Long timestamp){
         DatabaseReference reference= FirebaseDatabase.getInstance().getReference();
 

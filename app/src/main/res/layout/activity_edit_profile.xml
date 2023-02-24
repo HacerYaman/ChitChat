@@ -40,7 +40,7 @@
             android:layout_gravity="center"
             android:id="@+id/fullname"
             android:hint="Full Name"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             app:met_floatingLabel="normal">
         </EditText>
 
@@ -50,7 +50,7 @@
             android:layout_gravity="center"
             android:id="@+id/username"
             android:hint="User Name"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             app:met_floatingLabel="normal">
         </EditText>
 
@@ -60,27 +60,37 @@
             android:layout_gravity="center"
             android:id="@+id/aboutMe"
             android:hint="About Me"
-            android:layout_marginTop="20dp"
-            app:met_floatingLabel="normal">
+            android:layout_marginTop="15dp"
+            app:met_floatingLabel="normal"
+            android:maxLines="2"
+            android:paddingHorizontal="20dp">
         </EditText>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Save"
-            android:layout_marginTop="20dp"
-            android:id="@+id/save">
-        </Button>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Log Out"
-            android:id="@+id/logOut"
-            android:layout_marginTop="20dp">
-        </Button>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:id="@+id/save"
+                android:layout_marginLeft="80dp">
+            </Button>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log Out"
+                android:id="@+id/logOut"
+                android:layout_marginLeft="50dp"
+                >
+            </Button>
+
+        </LinearLayout>
 
         <ImageView
             android:layout_width="50dp"
@@ -88,7 +98,7 @@
             android:id="@+id/close"
             android:src="@drawable/ic_closeback"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             >
         </ImageView>
 

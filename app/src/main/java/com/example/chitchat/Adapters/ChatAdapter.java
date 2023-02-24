@@ -63,15 +63,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
 
         ///----------------------
-        if (position == messageArrayList.size()-1){
+       /* if (position == messageArrayList.size()-1){
             if (message.isSeen()){
                 ((SenderViewHolder)holder).txtSeen.setText("seen");
             }else{
                 ((SenderViewHolder)holder).txtSeen.setText("delivered");            //crashliyo
             }
         }else {
-            ((SenderViewHolder)holder).txtSeen.setVisibility(View.GONE);
-        }
+            ((SenderViewHolder)holder).txtSeen.setVisibility(View.GONE);                //buralardan çöküyo
+        }*/
         //-------------------------
 
 
