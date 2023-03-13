@@ -53,27 +53,39 @@ public class SearchFragment extends Fragment {
         binding.searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                binding.searchRecyclerView.setVisibility(View.VISIBLE);
+                searchUsers(charSequence.toString());
 
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                if (binding.searchBar.getText().toString().equals("")){
+                /*if (binding.searchBar.getText().toString().equals("")){
                     binding.searchRecyclerView.setVisibility(View.GONE);
                 }else{
                     binding.searchRecyclerView.setVisibility(View.VISIBLE);
                     searchUsers(charSequence.toString());
-                }
+                }*/
+
+                    binding.searchRecyclerView.setVisibility(View.VISIBLE);
+                    searchUsers(charSequence.toString());
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                    if (binding.searchBar.getText().toString().equals("")){
+                    /*if (binding.searchBar.getText().toString().equals("")){
                         binding.searchRecyclerView.setVisibility(View.GONE);
                     }else{
                         binding.searchRecyclerView.setVisibility(View.VISIBLE);
-                    }
+                    }*/
+
+
+               //     binding.searchRecyclerView.setVisibility(View.VISIBLE);
+
+
+
             }
         });
 

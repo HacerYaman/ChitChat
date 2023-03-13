@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.baitenthy.chitchat.Adapters.UsersAdapter;
+import com.baitenthy.chitchat.Models.Chatlist;
 import com.baitenthy.chitchat.Models.Message;
 import com.baitenthy.chitchat.Models.Users;
 import com.baitenthy.chitchat.Notifications.Token;
@@ -33,9 +34,11 @@ public class ChatsFragment extends Fragment {
     private FragmentChatsBinding binding;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
+    ArrayList<Users> usersArrayList;
 
-    ArrayList<Users> usersArrayList= new ArrayList<>();
-    ArrayList<String> filteredList= new ArrayList<>();
+    //ArrayList<String> filteredList= new ArrayList<>();
+    private ArrayList<Chatlist> filteredList= new ArrayList<>();
+
     UsersAdapter usersAdapter;
 
     @Override
@@ -49,7 +52,27 @@ public class ChatsFragment extends Fragment {
         binding.rerecece.setLayoutManager(layoutManager);
         binding.rerecece.setHasFixedSize(true);
 
-        FirebaseDatabase.getInstance().getReference("Chats").addValueEventListener(new ValueEventListener() {
+        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+               filteredList.clear();
+
+                for (DataSnapshot dataSnapshot: snapshot.getChildren() ){
+
+                    Chatlist chatlist= dataSnapshot.getValue(Chatlist.class);
+                    filteredList.add(chatlist);
+                }
+                filteredList();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        /*FirebaseDatabase.getInstance().getReference("Chats").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 filteredList.clear();
@@ -70,14 +93,45 @@ public class ChatsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
-        });
+        });*/
 
         //updateToken();
 
         return binding.getRoot();
     }
 
-    private void readChats(){
+    private void filteredList() {
+        usersArrayList= new ArrayList<>();
+
+        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                usersArrayList.clear();
+
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                    Users users= dataSnapshot.getValue(Users.class);
+
+                    for (Chatlist chatlist: filteredList){                              //??????????
+                        if (users.getUserid().equals(chatlist.getId())){
+                            usersArrayList.add(users);
+                        }
+                    }
+                }
+                usersAdapter= new UsersAdapter(usersArrayList, getContext() , true);
+                binding.rerecece.setAdapter(usersAdapter);
+                usersAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    /*private void readChats(){
 
         databaseReference=FirebaseDatabase.getInstance().getReference("Users");
 
@@ -115,7 +169,7 @@ public class ChatsFragment extends Fragment {
 
             }
         });
-    }
+    }*/
 
     private void status(String status){
 

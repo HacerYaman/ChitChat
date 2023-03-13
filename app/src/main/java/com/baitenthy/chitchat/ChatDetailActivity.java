@@ -136,7 +136,6 @@ public class ChatDetailActivity extends AppCompatActivity {
         });
 
         seenMessage(receiverId);
-
     }
 
     //--------------------------
@@ -172,6 +171,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String sender, String receiver, String message, Long timestamp){
+
         DatabaseReference reference= FirebaseDatabase.getInstance().getReference();
 
         HashMap<String , Object> hashMap= new HashMap<>();
@@ -184,6 +184,24 @@ public class ChatDetailActivity extends AppCompatActivity {
 
         reference.child("Chats").push().setValue(hashMap);
 
+        final DatabaseReference chatRef= FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(firebaseAuth.getUid())       //current user id olduğuna göre sender burası
+                .child(receiver);                //receiver olması gerek
+
+
+        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    chatRef.child("id").setValue(receiver);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void readMessages(String myid, String userid, String receiverId){

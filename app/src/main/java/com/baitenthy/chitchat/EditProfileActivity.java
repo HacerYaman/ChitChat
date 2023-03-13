@@ -134,7 +134,7 @@ public class EditProfileActivity extends AppCompatActivity {
     public void changePhoto(View view) {
         if (ContextCompat.checkSelfPermission(EditProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(EditProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Snackbar.make(view, "Permission needed for gallery.", Snackbar.LENGTH_INDEFINITE).setAction("Gimme the permission bitch.", new View.OnClickListener() {
+                Snackbar.make(view, "Permission needed for gallery.", Snackbar.LENGTH_INDEFINITE).setAction("Gimme the permission.", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -174,6 +174,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                     } else {
                         Toast.makeText(EditProfileActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -191,6 +192,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 imageDat = intentFromResult.getData();
                                 binding.proImage.setImageURI(imageDat);
                             }
+
                         }
                     }
                 });
@@ -208,7 +210,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void status(String status){
-
         HashMap<String, Object> hashMap= new HashMap<>();
         hashMap.put("status",status);
         FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).updateChildren(hashMap);
