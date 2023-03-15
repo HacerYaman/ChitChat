@@ -172,6 +172,9 @@ public class ChatDetailActivity extends AppCompatActivity {
 
     private void sendMessage(String sender, String receiver, String message, Long timestamp){
 
+        String senderRoom= sender+receiver;
+        String receiverRoom= receiver+sender;
+
         DatabaseReference reference= FirebaseDatabase.getInstance().getReference();
 
         HashMap<String , Object> hashMap= new HashMap<>();
@@ -182,7 +185,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         hashMap.put("timestamp", timestamp);
         hashMap.put("isSeen", false );
 
-        reference.child("Chats").push().setValue(hashMap);
+        reference.child("Chats").push().setValue(hashMap); //child senderdan önce pust.setValue idi random key yerine senderroom altına gönderiyorum
 
         final DatabaseReference chatRef= FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(firebaseAuth.getUid())       //current user id olduğuna göre sender burası

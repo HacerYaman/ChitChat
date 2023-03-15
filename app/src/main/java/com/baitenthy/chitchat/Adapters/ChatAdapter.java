@@ -86,15 +86,16 @@ public class ChatAdapter extends RecyclerView.Adapter {
                    new AlertDialog.Builder(mContex)
                            .setTitle("Delete")
                            .setMessage("Are you sure you want to delete this message?")
-                           .setPositiveButton("Yeap", new DialogInterface.OnClickListener() {
+                           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialogInterface, int i) {
                                    FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+
                                    String senderRoom= current_user+recId;
                                    String receiverRoom= recId+current_user;
 
                                    firebaseDatabase.getReference("Chats")
-                                           .child(senderRoom)
+                                           .child(senderRoom)           //null pointer exp.  mesajları sender room diye bir şeye kaydetmiyoruz o yüzden null.
                                            .child(message.getMessageId())
                                            .setValue(null);
 
@@ -102,8 +103,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
                                            .child(receiverRoom)
                                            .child(message.getMessageId())
                                            .setValue(null);
+
+
                                }
-                           }).setNegativeButton("Nope", new DialogInterface.OnClickListener() {
+                           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialogInterface, int i) {
                                    dialogInterface.dismiss();
