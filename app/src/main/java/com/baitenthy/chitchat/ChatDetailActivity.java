@@ -178,7 +178,6 @@ public class ChatDetailActivity extends AppCompatActivity {
     private void sendMessage(String sender, String receiver, String message, Long timestamp){
 
         String senderRoom= sender+receiver;
-        String receiverRoom= receiver+sender;
 
         String messageId= message+timestamp;
 
@@ -193,7 +192,6 @@ public class ChatDetailActivity extends AppCompatActivity {
         hashMap.put("isSeen", false );
         //buraya bir de message id ekle de mesajı silerken sender rooma girip sonrasındam mesajdan id ile mesajı silsin
         hashMap.put("messageId", messageId);
-
 
         reference.child("Chats").child(senderRoom).child(messageId).setValue(hashMap); //child senderdan önce pust.setValue idi random key yerine senderroom altına gönderiyorum
 
@@ -215,6 +213,14 @@ public class ChatDetailActivity extends AppCompatActivity {
 
             }
         });
+
+        //-----------------------------------------------------------------------------------------------------
+
+        String receiverRoom= receiver+sender;
+
+        reference.child("Chats").child(receiverRoom).child(messageId).setValue(hashMap);
+
+
     }
 
     private void readMessages(String myid, String userid, String receiverId){
@@ -222,9 +228,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         messageArrayList= new ArrayList<>();
 
         String senderRoom= firebaseAuth.getUid()+receiverId;
-
-        System.out.println("sender roommm:" + senderRoom);  //sender roommm--> L5Eq5p9gN3gQmlETx5JCKqT2WDA2WSTE3WA6T4aPZTuAfu4srrMeYCJ2
-
+        //System.out.println("sender roommm:" + senderRoom);  //sender roommm--> L5Eq5p9gN3gQmlETx5JCKqT2WDA2WSTE3WA6T4aPZTuAfu4srrMeYCJ2
 
         DatabaseReference reference= FirebaseDatabase.getInstance()
                 .getReference("Chats").child(senderRoom);
@@ -255,11 +259,47 @@ public class ChatDetailActivity extends AppCompatActivity {
 
             }
         });
+
+        //------------------------------------
+
+        String receiverRoom=receiverId+firebaseAuth.getUid();
+
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance()
+                .getReference("Chats").child(receiverRoom);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                messageArrayList.clear();
+
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Message message=dataSnapshot.getValue(Message.class);
+
+                    if (message.getReceiver().equals(myid) && message.getuId().equals(userid)
+                            || message.getReceiver().equals(userid) && message.getuId().equals(myid)){
+
+                        messageArrayList.add(message);
+                    }
+                }
+                chatAdapter= new ChatAdapter(messageArrayList,ChatDetailActivity.this,receiverId);
+                binding.chatrecyclerview.setAdapter(chatAdapter);
+                chatAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     //-------------online offline status
 
-   /* private void status(String status){
+    /*
+
+    private void status(String status){
         HashMap<String, Object> hashMap= new HashMap<>();
         hashMap.put("status",status);
         FirebaseDatabase.getInstance().getReference("Users").child(firebaseAuth.getUid()).updateChildren(hashMap);
@@ -279,7 +319,4 @@ public class ChatDetailActivity extends AppCompatActivity {
     }
 */
     //----------------------------
-
-
-
 }

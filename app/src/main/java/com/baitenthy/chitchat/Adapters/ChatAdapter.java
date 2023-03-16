@@ -84,8 +84,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
                if (current_user.equals(message.getuId())){
                    new AlertDialog.Builder(mContex)
                            .setTitle("Delete")
-                           .setMessage("Are you sure you want to delete this message?")
-                           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                           .setMessage("Delete this message from..")
+                           .setPositiveButton("Everyone", new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialogInterface, int i) {
                                    FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
@@ -100,20 +100,42 @@ public class ChatAdapter extends RecyclerView.Adapter {
                                            .child(messageIddd)
                                            .removeValue();
 
-                                   /*firebaseDatabase.getReference("Chats")
+                                   firebaseDatabase.getReference("Chats")
                                            .child(receiverRoom)
-                                           .child(message.getMessageId())
-                                           .setValue(null);*/
+                                           .child(messageIddd)
+                                           .setValue(null);
+
+                               }
+                           }).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialog, int which) {
+
+                                   dialog.dismiss();
 
 
                                }
-                           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                           }).setNegativeButton("Just me", new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialogInterface, int i) {
-                                   dialogInterface.dismiss();
+
+                                   FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
+
+                                   String senderRoom= current_user+recId;
+                                   String receiverRoom= recId+current_user;
+
+                                   String messageIddd= message.getMessage()+message.getTimestamp();
+
+                                   firebaseDatabase.getReference("Chats")
+                                           .child(senderRoom)           //null pointer exp.  mesajları sender room diye bir şeye kaydetmiyoruz o yüzden null.
+                                           .child(messageIddd)
+                                           .removeValue();
+
                                }
                            }).show();
                }else {
+
+                   //KARŞIDAKİNİN ATTIĞI MESAJI BENİM MESAJ KUTUMDAN SİLDİR
+
                    Toast.makeText(mContex, "You don't have permission to make changes.", Toast.LENGTH_LONG).show();
                }
                return false;
