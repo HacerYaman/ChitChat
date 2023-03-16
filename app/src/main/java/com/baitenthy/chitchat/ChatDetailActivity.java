@@ -236,25 +236,17 @@ public class ChatDetailActivity extends AppCompatActivity {
                 messageArrayList.clear();
 
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-
                     Message message=dataSnapshot.getValue(Message.class);
 
-                    if (message.getReceiver().equals(myid) && message.getuId().equals(userid)               //null diyo tekrar
+                    if (message.getReceiver().equals(myid) && message.getuId().equals(userid)
                             || message.getReceiver().equals(userid) && message.getuId().equals(myid)){
-                        System.out.println("ifin içinde");
+
                        messageArrayList.add(message);
                     }
-
-                    System.out.println("forun içide");
                 }
-
                 chatAdapter= new ChatAdapter(messageArrayList,ChatDetailActivity.this,receiverId);
                 binding.chatrecyclerview.setAdapter(chatAdapter);
                 chatAdapter.notifyDataSetChanged();
-
-                int size= messageArrayList.size();          //size sıfır çıkıyo
-                System.out.println(size);
-                System.out.println("on data change in içide");
 
             }
 
