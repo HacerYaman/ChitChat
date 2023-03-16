@@ -61,7 +61,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         Message message= messageArrayList.get(position);
 
-
         ///----------------------
        /* if (position == messageArrayList.size()-1){
             if (message.isSeen()){
@@ -94,15 +93,17 @@ public class ChatAdapter extends RecyclerView.Adapter {
                                    String senderRoom= current_user+recId;
                                    String receiverRoom= recId+current_user;
 
-                                   firebaseDatabase.getReference("Chats")
-                                           .child(senderRoom)           //null pointer exp.  mesajları sender room diye bir şeye kaydetmiyoruz o yüzden null.
-                                           .child(message.getMessageId())
-                                           .setValue(null);
+                                   String messageIddd= message.getMessage()+message.getTimestamp();
 
                                    firebaseDatabase.getReference("Chats")
+                                           .child(senderRoom)           //null pointer exp.  mesajları sender room diye bir şeye kaydetmiyoruz o yüzden null.
+                                           .child(messageIddd)
+                                           .removeValue();
+
+                                   /*firebaseDatabase.getReference("Chats")
                                            .child(receiverRoom)
                                            .child(message.getMessageId())
-                                           .setValue(null);
+                                           .setValue(null);*/
 
 
                                }
