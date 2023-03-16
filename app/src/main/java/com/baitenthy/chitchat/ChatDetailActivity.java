@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.onesignal.OneSignal;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         binding = ActivityChatDetailBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -164,7 +166,6 @@ public class ChatDetailActivity extends AppCompatActivity {
 
                         dataSnapshot.getRef().updateChildren(hashMap);
                     }
-
                 }
             }
 
@@ -217,10 +218,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         //-----------------------------------------------------------------------------------------------------
 
         String receiverRoom= receiver+sender;
-
         reference.child("Chats").child(receiverRoom).child(messageId).setValue(hashMap);
-
-
     }
 
     private void readMessages(String myid, String userid, String receiverId){
